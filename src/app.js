@@ -1,11 +1,12 @@
 const express = require("express");
 const serverless = require("serverless-http");
 require("dotenv").config();
-require("./models/db");
+// require("../models/db");
+require("./../models/db");
 
-const userRouter = require("./routes/user");
+const userRouter = require("./../routes/user");
 
-const User = require("./models/user");
+const User = require("./../models/user");
 
 const app = express();
 
@@ -19,7 +20,7 @@ const app = express();
 
 app.use(express.json());
 // app.use(userRouter);
-app.use("/.netlify/functions/api", userRouter);
+app.use("/.netlify/functions/app", userRouter);
 
 const test = async (email, password) => {
   const user = await User.findOne({ email: email });
@@ -38,8 +39,9 @@ app.get("/", (req, res) => {
   res.send('<H1 style="color:red">Hello World</H1>');
 });
 
-app.listen(8000, () => {
-  console.log("port is listening");
-});
+// app.listen(8000, () => {
+//   console.log("port is listening");
+// });
 
+module.exports = app;
 module.exports.handler = serverless(app);
